@@ -23,9 +23,9 @@ jq (optional, only for checking JSON output)
 
 # Exit codes
 Code	Meaning
-0	All checks OK
-1	At least one WARN
-2	At least one CRIT
+- 0	All checks OK
+- 1	At least one WARN
+- 2	At least one CRIT
 
 CRIT rules:
 
@@ -35,3 +35,4 @@ TODO: the other CRIT rules you chose, and why
 
 
 Notes :
+to be added
