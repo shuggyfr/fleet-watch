@@ -3,16 +3,16 @@
 Fleet Watch monitors the health of a fleet of Linux servers. An agent runs on each host, collects health data, and reports it. Over time this grows into a cloud service: a Python agent reporting to a REST API, containerized, deployed to AWS with Terraform, and shipped through CI/CD.
 
 # Repository layout
-
+```text
 fleet-watch/
-├── agent/
-│   └── healthcheck.sh       # health-check agent
-├── deploy/
-│   ├── fleetwatch.service   # systemd unit that runs one check
-│   ├── fleetwatch.timer     # runs the service every 5 minutes
-│   └── fleetwatch.logrotate # daily rotation, keeps 7 days
-└── README.md
-
+  ├── agent/
+  │   └── healthcheck.sh       # health-check agent
+  ├── deploy/
+  │   ├── fleetwatch.service   # systemd unit that runs one check
+  │   ├── fleetwatch.timer     # runs the service every 5 minutes
+  │   └── fleetwatch.logrotate # daily rotation, keeps 7 days
+  └── README.md
+```
 
 # Requirements
 
