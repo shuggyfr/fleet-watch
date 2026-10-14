@@ -17,12 +17,12 @@ def check_memory():
     available = meminfo['MemAvailable']
     status =""
 
-    if used > 85 :
+    if used >=85 :
         status = "WARN"
     else:
         status = "OK"
 
-    result = {'total': total, 'available':available,'used%':used, 'status': status}
+    result = {'totalK_B': total, 'available':available,'used%':used, 'status': status}
 
     
     return result
