@@ -1,4 +1,4 @@
-
+import subprocess
 import socket
 import platform
 import os
@@ -110,6 +110,22 @@ def check_cpu_load():
 
     return cpu_load
 
+def disk_check():
+
+    used_pct ={}
+    files_info = subprocess.run('df', capture_output=True,text=True)
+    for line in files_info.stdout.splitlines()[1:]:
+        output = line.split()
+
+        if output[0].startswith('/dev'):
+            used_pct[output[5]]=int(output[4].strip("%"))
+
+    return used_pct
+
+
+
+
+
 
 def main():
     
@@ -117,6 +133,7 @@ def main():
     print(check_host())
     print(check_uptime())
     print(check_cpu_load())
+    print(disk_check())
 
 if __name__ =="__main__":
     main()
