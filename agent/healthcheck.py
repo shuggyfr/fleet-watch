@@ -120,12 +120,43 @@ def disk_check():
         if output[0].startswith('/dev'):
             used_pct[output[5]]=int(output[4].strip("%"))
 
-    return used_pct
+    values = used_pct.values()
+    highest = max(values)
+
+    if highest >= 95:
+        status = "CRIT"
+    
+    elif highest >= 80:
+        status = "WARN"
+
+    else:
+        status = "OK"
+
+    results = {
+        "disks" : used_pct,
+        "status": status
+    }
+
+    return results
 
 
+def check_processes():
 
+    processes = subprocess.run(["ps", "-eo", "pid,user,%mem,comm", "--sort=-%mem"], capture_output=True, text=True)
+    per_process =  []
+    for line in processes.stdout.splitlines()[1:6]:
+        output = line.split()
 
+        info = {
+            "PID":int(output[0]),
+            "USER": output[1],
+            "mem_pct":float(output[2]),
+            "COMMAND":output[3]
+        }
 
+        per_process.append(info)
+
+    return per_process
 
 def main():
     
@@ -134,6 +165,7 @@ def main():
     print(check_uptime())
     print(check_cpu_load())
     print(disk_check())
+    print(check_processes())
 
 if __name__ =="__main__":
     main()
