@@ -148,10 +148,10 @@ def check_processes():
         output = line.split()
 
         info = {
-            "PID":int(output[0]),
-            "USER": output[1],
+            "pid":int(output[0]),
+            "user": output[1],
             "mem_pct":float(output[2]),
-            "COMMAND":output[3]
+            "command":output[3]
         }
 
         per_process.append(info)
