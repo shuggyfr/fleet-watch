@@ -174,10 +174,18 @@ def check_ssh_failures():
             output = parts[parts.index("from")+1]
             ips.append(output)
 
+    ip_counts ={}
+    for ip in ips:
+        if ip in ip_counts:
+            ip_counts[ip]+=1
+
+        else:
+            ip_counts[ip]=1
+
     result = {
-            "failed_logins":count,
-            "ips":ips
-        }
+                "failed_logins":count,
+                "ip_counts":ip_counts
+            }
     
     return result
 
