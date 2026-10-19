@@ -158,6 +158,30 @@ def check_processes():
 
     return per_process
 
+
+
+def check_ssh_failures():
+
+    ssh_failures = subprocess.run(["journalctl","_COMM=sshd-session","--since","24 hours ago"], capture_output=True, text=True)
+    ips = []
+    count = 0
+    for line in ssh_failures.stdout.splitlines():
+        
+        
+        if "Invalid user" in line:
+            parts = line.split()
+            count+=1
+            output = parts[parts.index("from")+1]
+            ips.append(output)
+
+    result = {
+            "failed_logins":count,
+            "ips":ips
+        }
+    
+    return result
+
+
 def main():
     
     print(check_memory())
@@ -166,6 +190,7 @@ def main():
     print(check_cpu_load())
     print(disk_check())
     print(check_processes())
+    print(check_ssh_failures())
 
 if __name__ =="__main__":
     main()
