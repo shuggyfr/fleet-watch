@@ -182,14 +182,28 @@ def check_ssh_failures():
         else:
             ip_counts[ip]=1
 
-    result = {
-                "failed_logins":count,
-                "ip_counts":ip_counts
+    
+
+    top = sorted(ip_counts, key=ip_counts.get, reverse=True)[:3]
+    
+
+    top_ips =[]
+    for ip in top:
+
+        info = {"ip":ip,
+                "attempts":ip_counts[ip]
             }
+
+        top_ips.append(info)
+    print(top_ips)
+
+
+    result = {
+                    "failed_logins":count,
+                    "top_ips": top_ips
+                }
     
     return result
-
-
 def main():
     
     print(check_memory())
