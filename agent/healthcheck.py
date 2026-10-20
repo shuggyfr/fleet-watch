@@ -204,8 +204,26 @@ def check_ssh_failures():
                 }
     
     return result
+
+
+def check_services(services):
+    result ={}
+    status ="OK"
+    for name in services:
+
+        run = subprocess.run(['systemctl','is-active',name], capture_output=True,text=True)
+        
+        state = run.stdout.strip()
+
+        result[name]=state
+
+        if state != 'active':
+            status='CRIT'
+
+    return {"services":result,"status":status}
+
 def main():
-    
+
     print(check_memory())
     print(check_host())
     print(check_uptime())
@@ -213,6 +231,7 @@ def main():
     print(disk_check())
     print(check_processes())
     print(check_ssh_failures())
+    print(check_services(["ssh", "mariadb"]))
 
 if __name__ =="__main__":
     main()
