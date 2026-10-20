@@ -2,6 +2,7 @@ import subprocess
 import socket
 import platform
 import os
+import json
 
 
 def check_memory():
@@ -236,7 +237,21 @@ def main():
         
     }
 
-    print(report)
+   
+    
+    statuses = [report["memory"]["status"],report["cpu"]["status"],report["disk"]["status"],report["services"]["status"]]
+
+
+    if "CRIT" in statuses:
+        overall = "CRIT"
+    elif "WARN" in statuses:
+        overall ="WARN"
+    else:
+        overall = "OK"
+
+
+    report["status"]=overall
+    print(json.dumps(report,indent=2))
 
 if __name__ =="__main__":
     main()
