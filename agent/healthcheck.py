@@ -27,7 +27,7 @@ def check_memory():
     result = {
         "total_kb": total, 
         "available_kb":available,
-        "used_percntage":used, 
+        "used_pct":used, 
         "status": status
     }
 
@@ -195,7 +195,7 @@ def check_ssh_failures():
             }
 
         top_ips.append(info)
-    print(top_ips)
+    
 
 
     result = {
@@ -224,14 +224,19 @@ def check_services(services):
 
 def main():
 
-    print(check_memory())
-    print(check_host())
-    print(check_uptime())
-    print(check_cpu_load())
-    print(disk_check())
-    print(check_processes())
-    print(check_ssh_failures())
-    print(check_services(["ssh", "mariadb"]))
+    report ={
+        "host":check_host(),
+        "uptime":check_uptime(),
+        "memory":check_memory(),
+        "disk":disk_check(),
+        "cpu":check_cpu_load(),
+        "ssh":check_ssh_failures(),
+        "services":check_services(["ssh", "mariadb", "pizza"]),
+        "processes":check_processes()
+        
+    }
+
+    print(report)
 
 if __name__ =="__main__":
     main()
