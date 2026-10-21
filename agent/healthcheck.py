@@ -3,6 +3,7 @@ import socket
 import platform
 import os
 import json
+import sys
 
 
 def check_memory():
@@ -252,6 +253,18 @@ def main():
 
     report["status"]=overall
     print(json.dumps(report,indent=2))
+
+    
+
+    if overall == "CRIT":
+        code = 2
+    elif overall == "WARN":
+        code = 1
+    else:
+        code = 0
+
+    sys.exit(code)
+    
 
 if __name__ =="__main__":
     main()
