@@ -4,6 +4,7 @@ import platform
 import os
 import json
 import sys
+import argparse
 
 
 def check_memory():
@@ -226,6 +227,13 @@ def check_services(services):
 
 def main():
 
+    parser = argparse.ArgumentParser(description="Fleet Watch health check")
+    parser.add_argument("--services", default="ssh")
+    args = parser.parse_args()
+    service_list = args.services.split(",")
+   
+
+
     report ={
         "host":check_host(),
         "uptime":check_uptime(),
@@ -233,7 +241,7 @@ def main():
         "disk":disk_check(),
         "cpu":check_cpu_load(),
         "ssh":check_ssh_failures(),
-        "services":check_services(["ssh", "mariadb", "pizza"]),
+        "services":check_services(service_list),
         "processes":check_processes()
         
     }
