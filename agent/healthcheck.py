@@ -233,6 +233,7 @@ def main():
     parser.add_argument("--services",default="ssh")
     parser.add_argument("--disk-warn", default=80 ,type=int)
     parser.add_argument("--mem-warn", default=85, type=int)
+    parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
     service_list = args.services.split(",")
     
@@ -265,7 +266,10 @@ def main():
 
 
     report["status"]=overall
-    print(json.dumps(report,indent=2))
+    if args.json:
+        print(json.dumps(report,indent=2))
+    else:
+        print(f"{report["host"]["hostname"]}: {overall}")
 
     
 
