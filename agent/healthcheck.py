@@ -113,7 +113,7 @@ def check_cpu_load():
 
     return cpu_load
 
-def disk_check():
+def disk_check(warn):
 
     used_pct ={}
     files_info = subprocess.run('df', capture_output=True,text=True)
@@ -129,7 +129,7 @@ def disk_check():
     if highest >= 95:
         status = "CRIT"
     
-    elif highest >= 80:
+    elif highest >=warn:
         status = "WARN"
 
     else:
@@ -227,10 +227,14 @@ def check_services(services):
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Fleet Watch health check")
-    parser.add_argument("--services", default="ssh")
+# creates the arguements to run the script and creates a list of the arguements
+
+    parser = argparse.ArgumentParser(description="Fleet Watch health check") 
+    parser.add_argument("--services",default="ssh")
+    parser.add_argument("--disk-warn", default=80 ,type=int)
     args = parser.parse_args()
     service_list = args.services.split(",")
+    
    
 
 
@@ -238,7 +242,7 @@ def main():
         "host":check_host(),
         "uptime":check_uptime(),
         "memory":check_memory(),
-        "disk":disk_check(),
+        "disk":disk_check(args.disk_warn),
         "cpu":check_cpu_load(),
         "ssh":check_ssh_failures(),
         "services":check_services(service_list),
