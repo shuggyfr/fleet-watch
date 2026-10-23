@@ -7,7 +7,7 @@ import sys
 import argparse
 
 
-def check_memory():
+def check_memory(warn):
     
     meminfo = {}
     with open('/proc/meminfo') as f:
@@ -22,7 +22,7 @@ def check_memory():
     available = meminfo['MemAvailable']
     
 
-    if used >=85 :
+    if used >=warn :
         status = "WARN"
     else:
         status = "OK"
@@ -232,6 +232,7 @@ def main():
     parser = argparse.ArgumentParser(description="Fleet Watch health check") 
     parser.add_argument("--services",default="ssh")
     parser.add_argument("--disk-warn", default=80 ,type=int)
+    parser.add_argument("--mem-warn", default=85, type=int)
     args = parser.parse_args()
     service_list = args.services.split(",")
     
@@ -241,7 +242,7 @@ def main():
     report ={
         "host":check_host(),
         "uptime":check_uptime(),
-        "memory":check_memory(),
+        "memory":check_memory(args.mem_warn),
         "disk":disk_check(args.disk_warn),
         "cpu":check_cpu_load(),
         "ssh":check_ssh_failures(),
